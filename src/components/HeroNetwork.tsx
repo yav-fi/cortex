@@ -275,12 +275,21 @@ const DOTS: { x: number; y: number; r: number }[] = [
 
 /* target positions — even pentagon (circle) around Cortex hub on scroll
  * Ordered to minimise travel distance from each node's spread position */
-const TARGETS = [
+const TARGETS_DESKTOP = [
   { x: 20, y: 40 },  // GEO (14,68) → upper-left
-  { x: 50, y: 18 },  // Seurat (24,22) → top center
+  { x: 50, y: 23 },  // Seurat (24,22) → top center (lowered to clear sticky nav)
   { x: 31, y: 76 },  // SnapGene (50,86) → lower-left
   { x: 80, y: 40 },  // ProjecTILs (76,22) → upper-right
   { x: 69, y: 76 },  // scRep (86,68) → lower-right
+];
+
+/* Mobile: tighter pentagon, slightly lower to clear navbar, smaller overall */
+const TARGETS_MOBILE = [
+  { x: 24, y: 42 },  // GEO → upper-left (closer to center)
+  { x: 50, y: 27 },  // Seurat → top center (pushed down from 18 to clear navbar)
+  { x: 34, y: 72 },  // SnapGene → lower-left (closer)
+  { x: 76, y: 42 },  // ProjecTILs → upper-right (closer)
+  { x: 66, y: 72 },  // scRep → lower-right (closer)
 ];
 
 /* ================================================================== */
@@ -322,6 +331,7 @@ export default function HeroNetwork() {
     let sDist = 0;
     let cW = 0;
     let cH = 0;
+    let isMobile = false;
 
     const measure = () => {
       sTop = section.offsetTop;
@@ -331,6 +341,7 @@ export default function HeroNetwork() {
         cW = container.offsetWidth;
         cH = container.offsetHeight;
       }
+      isMobile = window.innerWidth < 768;
     };
     measure();
     window.addEventListener("resize", measure);
@@ -340,6 +351,7 @@ export default function HeroNetwork() {
     let isProgrammaticScroll = false;
     let rafId = 0;
     let prevPointerEvents = "auto";
+    let isTouching = false;
 
     /* apply visual state — transform & opacity only (compositor-friendly) */
     const applyProgress = (p: number) => {
@@ -363,12 +375,14 @@ export default function HeroNetwork() {
       }
 
       /* nodes: converge toward core via transform (no left/top changes) */
+      const targets = isMobile ? TARGETS_MOBILE : TARGETS_DESKTOP;
+      const maxScale = isMobile ? 1.12 : 1.45;
       const np = easeIO(clamp01((p - 0.08) / 0.65));
       nodeRefs.current.forEach((el, i) => {
         if (!el) return;
-        const dx = ((TARGETS[i].x - starts[i].x) / 100) * cW * np;
-        const dy = ((TARGETS[i].y - starts[i].y) / 100) * cH * np;
-        const s = lerp(1, 1.65, np);
+        const dx = ((targets[i].x - starts[i].x) / 100) * cW * np;
+        const dy = ((targets[i].y - starts[i].y) / 100) * cH * np;
+        const s = lerp(1, maxScale, np);
         el.style.transform = `translate(calc(-50% + ${dx}px), calc(-50% + ${dy}px)) scale(${s})`;
 
         const detail = el.querySelector("[data-detail]") as HTMLElement | null;
@@ -379,8 +393,8 @@ export default function HeroNetwork() {
 
       /* dynamic SVG connection paths — follow node movement */
       const curNodes = starts.map((s, i) => ({
-        x: lerp(s.x, TARGETS[i].x, np),
-        y: lerp(s.y, TARGETS[i].y, np),
+        x: lerp(s.x, targets[i].x, np),
+        y: lerp(s.y, targets[i].y, np),
       }));
       // Hub paths (tool → tool, star pattern): refs 0..4
       HUB_PAIRS.forEach(([a, b], i) => {
@@ -438,7 +452,6 @@ export default function HeroNetwork() {
     animateScrollRef.current = animateScrollTo;
 
     const onScroll = () => {
-      if (window.innerWidth < 768) return;
       if (rafId) return; /* already queued — skip until next frame */
 
       rafId = requestAnimationFrame(() => {
@@ -449,31 +462,48 @@ export default function HeroNetwork() {
         const raw = clamp01(scrolled / sDist);
         applyProgress(raw);
 
-        /* snap logic — disabled during programmatic scroll */
-        if (isSnapping || isProgrammaticScroll) return;
+        /* snap logic — disabled during programmatic scroll or active touch */
+        if (isSnapping || isProgrammaticScroll || isTouching) return;
         if (snapTimer) clearTimeout(snapTimer);
+        const snapDelay = isMobile ? 350 : 90;
         snapTimer = setTimeout(() => {
+          if (isTouching) return; /* re-check — user may have started touching again */
           const s2 = Math.max(0, window.scrollY - sTop);
           const p2 = clamp01(s2 / sDist);
           /* snap if not already at a pole — any in-between position resolves */
           if (p2 > 0.01 && p2 < 0.99) {
             isSnapping = true;
-            const target = p2 >= 0.3 ? 1 : 0;
-            window.scrollTo({ top: sTop + target * sDist, behavior: "smooth" });
-            setTimeout(() => {
-              isSnapping = false;
-            }, 550);
+            const snapTarget = p2 >= 0.3 ? 1 : 0;
+            const targetY = sTop + snapTarget * sDist;
+            if (isMobile) {
+              /* use custom smooth scroll on mobile — native scrollTo fights touch inertia */
+              animateScrollTo(targetY, 600);
+              setTimeout(() => { isSnapping = false; }, 700);
+            } else {
+              window.scrollTo({ top: targetY, behavior: "smooth" });
+              setTimeout(() => { isSnapping = false; }, 550);
+            }
           }
-        }, 90);
+        }, snapDelay);
       });
     };
 
+    /* touch tracking — prevent snap from fighting touch inertia on mobile */
+    const onTouchStart = () => {
+      isTouching = true;
+      if (snapTimer) { clearTimeout(snapTimer); snapTimer = null; }
+    };
+    const onTouchEnd = () => { isTouching = false; };
+
     window.addEventListener("scroll", onScroll, { passive: true });
-    /* only set initial scroll state on desktop — on mobile core stays visible */
-    if (window.innerWidth >= 768) applyProgress(0);
+    window.addEventListener("touchstart", onTouchStart, { passive: true });
+    window.addEventListener("touchend", onTouchEnd, { passive: true });
+    applyProgress(0);
     return () => {
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", measure);
+      window.removeEventListener("touchstart", onTouchStart);
+      window.removeEventListener("touchend", onTouchEnd);
       if (snapTimer) clearTimeout(snapTimer);
       if (rafId) cancelAnimationFrame(rafId);
     };
@@ -485,7 +515,6 @@ export default function HeroNetwork() {
     if (!el) return;
     let mRaf = 0;
     const onMove = (e: MouseEvent) => {
-      if (window.innerWidth < 768) return;
       if (mRaf) return;
       mRaf = requestAnimationFrame(() => {
         mRaf = 0;
@@ -511,8 +540,8 @@ export default function HeroNetwork() {
   /* ================================================================ */
 
   return (
-    <section ref={sectionRef} id="tools" className="relative md:h-[140vh] md:-mt-16">
-      <div className="relative md:sticky md:top-0 min-h-screen md:h-screen overflow-hidden bg-gradient-to-b from-white via-indigo-50/20 to-white">
+    <section ref={sectionRef} id="tools" className="relative h-[140vh] -mt-16">
+      <div className="relative sticky top-0 h-screen overflow-hidden bg-gradient-to-b from-white via-indigo-50/20 to-white">
         {/* soft bg orbs */}
         <div className="absolute inset-0 z-0 pointer-events-none">
           <div className="absolute top-[20%] left-[16%] w-[480px] h-[480px] rounded-full bg-blue-50/40 blur-[100px]" />
@@ -520,14 +549,12 @@ export default function HeroNetwork() {
           <div className="absolute bottom-[18%] left-[32%] w-[400px] h-[400px] rounded-full bg-cyan-50/25 blur-[100px]" />
         </div>
 
-        <div className="relative z-10 h-full flex flex-col md:block">
-          {/* Navbar spacer (mobile) */}
-          <div className="h-20 md:h-0 shrink-0" />
+        <div className="relative z-10 h-full block">
 
           {/* ========= HERO TEXT ========= */}
           <div
             ref={textRef}
-            className="relative z-40 px-6 py-6 md:absolute md:inset-0 md:flex md:items-center md:justify-center md:py-0 will-change-[transform,opacity] md:pointer-events-none"
+            className="absolute z-40 inset-0 flex items-center justify-center will-change-[transform,opacity] pointer-events-none"
           >
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -589,7 +616,7 @@ export default function HeroNetwork() {
           <div ref={expandLabelRef} className="hidden" />
 
           {/* ========= NETWORK ========= */}
-          <div className="relative flex-1 min-h-[320px] md:absolute md:inset-0 md:z-[45] md:pointer-events-none">
+          <div className="absolute inset-0 z-[45] pointer-events-none">
             <div
               ref={networkRef}
               className="absolute inset-0 transition-transform duration-[400ms] ease-out will-change-transform"
@@ -718,7 +745,7 @@ export default function HeroNetwork() {
               {/* ---------- CENTER "EXPLORE TOOLS" LABEL ---------- */}
               <div
                 ref={coreRef}
-                className="absolute z-20 will-change-[transform,opacity] md:opacity-0 pointer-events-none"
+                className="absolute z-20 will-change-[transform,opacity] opacity-0 pointer-events-none"
                 style={{
                   left: `${CTR.x}%`,
                   top: `${CTR.y}%`,
@@ -726,11 +753,11 @@ export default function HeroNetwork() {
                 }}
               >
                 <div className="flex flex-col items-center gap-2 text-center">
-                  <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-slate-800 whitespace-nowrap select-none">
+                  <h2 className="text-lg md:text-4xl font-bold tracking-tight text-slate-800 whitespace-nowrap select-none">
                     Explore Tools
                   </h2>
-                  <p className="text-sm md:text-base text-slate-600 whitespace-nowrap select-none">
-                    Click any node to learn more
+                  <p className="text-[11px] md:text-base text-slate-600 whitespace-nowrap select-none">
+                    Tap any node to learn more
                   </p>
                 </div>
               </div>
@@ -763,25 +790,25 @@ export default function HeroNetwork() {
                     className="flex flex-col items-center gap-1.5 group outline-none pointer-events-auto"
                   >
                     <div
-                      className="w-[68px] h-[68px] md:w-[88px] md:h-[88px] rounded-full bg-white flex items-center justify-center transition-shadow duration-300 group-hover:shadow-lg"
+                      className="w-[52px] h-[52px] md:w-[88px] md:h-[88px] rounded-full bg-white flex items-center justify-center transition-shadow duration-300 group-hover:shadow-lg"
                       style={{
                         border: `2.5px solid ${tool.color}35`,
                         boxShadow: `0 4px 24px ${tool.color}15`,
                       }}
                     >
-                      <span className="text-[24px] md:text-[32px] select-none">
+                      <span className="text-[18px] md:text-[32px] select-none">
                         {tool.icon}
                       </span>
                     </div>
                     <span
-                      className="text-[11px] md:text-[13px] font-semibold tracking-tight whitespace-nowrap select-none"
+                      className="text-[9px] md:text-[13px] font-semibold tracking-tight whitespace-nowrap select-none"
                       style={{ color: tool.color }}
                     >
                       {tool.name}
                     </span>
                     <span
                       data-detail
-                      className="hidden md:block text-[10px] text-slate-500 font-medium whitespace-nowrap opacity-0"
+                      className="text-[10px] text-slate-500 font-medium whitespace-nowrap opacity-0"
                     >
                       {tool.fullName}
                     </span>
