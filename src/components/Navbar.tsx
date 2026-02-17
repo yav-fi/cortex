@@ -19,7 +19,7 @@ export default function Navbar() {
       initial={{ y: -80, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.6, ease: "easeOut" }}
-      className={`sticky top-0 z-50 transition-[background-color,box-shadow] duration-300 ${
+      className={`sticky top-0 z-50 transition-[border-color,box-shadow,background-color] duration-300 ${
         scrolled
           ? "bg-slate-950/75 backdrop-blur-xl shadow-[0_10px_30px_rgba(2,6,23,0.55)]"
           : "bg-transparent"
@@ -44,7 +44,7 @@ export default function Navbar() {
           >
             Investors
           </a>
-          <button className="text-[13px] font-semibold px-5 py-2 rounded-full bg-slate-900 text-white hover:bg-slate-800 transition-all duration-200 shadow-sm hover:shadow-md">
+          <button className="text-[13px] font-semibold px-5 py-2 rounded-full bg-[var(--surface-1)] text-[var(--text-0)] border border-[var(--border-0)] hover:bg-[color-mix(in_srgb,var(--surface-1)_85%,var(--accent-0)_15%)] transition-all duration-200 shadow-sm hover:shadow-[0_0_24px_-12px_var(--accent-0)]">
             Get Early Access
           </button>
         </div>
@@ -101,7 +101,7 @@ export default function Navbar() {
               </a>
               <button
                 onClick={() => setIsOpen(false)}
-                className="mt-2 text-[13px] font-semibold px-5 py-2.5 rounded-full bg-slate-900 text-white hover:bg-slate-800 transition-all duration-200 shadow-sm w-full"
+                className="mt-2 text-[13px] font-semibold px-5 py-2.5 rounded-full border border-slate-300/30 bg-slate-950/70 text-slate-100 hover:border-slate-200/60 transition-all duration-200 shadow-sm w-full"
               >
                 Get Early Access
               </button>

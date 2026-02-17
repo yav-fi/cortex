@@ -3,11 +3,14 @@
 @tailwind utilities;
 
 :root {
-  --color-accent-blue: #3B82F6;
-  --color-accent-indigo: #6366F1;
-  --color-accent-violet: #8B5CF6;
-  --color-accent-cyan: #06B6D4;
-  --color-accent-emerald: #10B981;
+  --bg-0: #0c111b;
+  --bg-1: #131b2a;
+  --surface-0: #1a2435;
+  --surface-1: #202d40;
+  --border-0: #2a374b;
+  --text-0: #e7ecf7;
+  --text-1: #9ea9bc;
+  --accent-0: #5a7dff;
 }
 
 * {
@@ -21,12 +24,14 @@ html {
 }
 
 body {
+  background: var(--bg-0);
+  color: var(--text-0);
   overflow-x: hidden;
 }
 
 /* ---- Gradient text ---- */
 .gradient-text {
-  background: linear-gradient(135deg, #3B82F6 0%, #6366F1 40%, #8B5CF6 70%, #06B6D4 100%);
+  background: linear-gradient(135deg, #93a7df 0%, #8196d4 42%, #6d84ca 72%, #5a7dff 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -41,17 +46,39 @@ body {
 
 /* ---- Glass morphism ---- */
 .glass {
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: rgba(30, 41, 59, 0.58);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(148, 163, 184, 0.28);
 }
 
 .glass-strong {
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(30px);
-  -webkit-backdrop-filter: blur(30px);
-  border: 1px solid rgba(255, 255, 255, 0.5);
+  background: rgba(15, 23, 42, 0.74);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(148, 163, 184, 0.42);
+}
+
+/* ---- Optional material hooks for industrial glass cards ---- */
+.glass-inner-shadow {
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), inset 0 -14px 28px rgba(2, 6, 23, 0.25);
+}
+
+.glass-noise-hook {
+  position: relative;
+  isolation: isolate;
+}
+
+.glass-noise-hook::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: var(--glass-noise-opacity, 0);
+  background-image: var(--glass-noise-texture);
+  mix-blend-mode: soft-light;
+  z-index: -1;
 }
 
 /* ---- SVG dot pulse for intermediate nodes ---- */
@@ -74,12 +101,12 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #CBD5E1;
+  background: #3d4a63;
   border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #94A3B8;
+  background: #55627a;
 }
 
 /* ---- Smooth section transitions ---- */
