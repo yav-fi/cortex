@@ -44,7 +44,7 @@ export default function Navbar() {
           >
             Investors
           </a>
-          <button className="text-[13px] font-semibold px-5 py-2 rounded-full bg-slate-900 text-white hover:bg-slate-800 transition-all duration-200 shadow-sm hover:shadow-md">
+          <button className="text-[13px] font-semibold px-5 py-2 rounded-full bg-[var(--surface-1)] text-[var(--text-0)] border border-[var(--border-0)] hover:bg-[color-mix(in_srgb,var(--surface-1)_85%,var(--accent-0)_15%)] transition-all duration-200 shadow-sm hover:shadow-[0_0_24px_-12px_var(--accent-0)]">
             Get Early Access
           </button>
         </div>
