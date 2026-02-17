@@ -21,12 +21,12 @@ export default function Navbar() {
       transition={{ duration: 0.6, ease: "easeOut" }}
       className={`sticky top-0 z-50 transition-[background-color,box-shadow] duration-300 ${
         scrolled
-          ? "bg-white/80 backdrop-blur-xl shadow-sm"
+          ? "bg-[color-mix(in_srgb,var(--bg-0)_76%,transparent)] backdrop-blur-xl shadow-[0_1px_0_0_var(--border-0)]"
           : "bg-transparent"
       }`}
     >
       <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-        <span className="font-semibold text-[17px] tracking-tight text-slate-900">
+        <span className="font-semibold text-[17px] tracking-tight text-[var(--text-0)]">
           Cortex
         </span>
 
@@ -34,24 +34,24 @@ export default function Navbar() {
         <div className="hidden md:flex items-center gap-8">
           <a
             href="#features"
-            className="text-[13px] font-medium text-slate-500 hover:text-slate-900 transition-colors duration-200"
+            className="text-[13px] font-medium text-[var(--text-1)] hover:text-[var(--text-0)] transition-colors duration-200"
           >
             Platform
           </a>
           <a
             href="#investors"
-            className="text-[13px] font-medium text-slate-500 hover:text-slate-900 transition-colors duration-200"
+            className="text-[13px] font-medium text-[var(--text-1)] hover:text-[var(--text-0)] transition-colors duration-200"
           >
             Investors
           </a>
-          <button className="text-[13px] font-semibold px-5 py-2 rounded-full bg-slate-900 text-white hover:bg-slate-800 transition-all duration-200 shadow-sm hover:shadow-md">
+          <button className="text-[13px] font-semibold px-5 py-2 rounded-full bg-[var(--surface-1)] text-[var(--text-0)] border border-[var(--border-0)] hover:bg-[color-mix(in_srgb,var(--surface-1)_85%,var(--accent-0)_15%)] transition-all duration-200 shadow-sm hover:shadow-[0_0_24px_-12px_var(--accent-0)]">
             Get Early Access
           </button>
         </div>
 
         {/* Mobile menu button */}
         <button
-          className="md:hidden p-2 text-slate-600 hover:text-slate-900 transition-colors"
+          className="md:hidden p-2 text-[var(--text-1)] hover:text-[var(--text-0)] transition-colors"
           onClick={() => setIsOpen(!isOpen)}
           aria-label="Toggle menu"
           aria-expanded={isOpen}
@@ -82,26 +82,26 @@ export default function Navbar() {
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.25, ease: "easeInOut" }}
-            className="md:hidden overflow-hidden bg-white/95 backdrop-blur-md border-t border-slate-100 shadow-lg"
+            className="md:hidden overflow-hidden bg-[color-mix(in_srgb,var(--surface-0)_92%,transparent)] backdrop-blur-md border-t border-[var(--border-0)] shadow-lg"
           >
             <div className="px-6 py-4 flex flex-col gap-1">
               <a
                 href="#features"
                 onClick={() => setIsOpen(false)}
-                className="text-[14px] font-medium text-slate-600 hover:text-slate-900 transition-colors py-2.5"
+                className="text-[14px] font-medium text-[var(--text-1)] hover:text-[var(--text-0)] transition-colors py-2.5"
               >
                 Platform
               </a>
               <a
                 href="#investors"
                 onClick={() => setIsOpen(false)}
-                className="text-[14px] font-medium text-slate-600 hover:text-slate-900 transition-colors py-2.5"
+                className="text-[14px] font-medium text-[var(--text-1)] hover:text-[var(--text-0)] transition-colors py-2.5"
               >
                 Investors
               </a>
               <button
                 onClick={() => setIsOpen(false)}
-                className="mt-2 text-[13px] font-semibold px-5 py-2.5 rounded-full bg-slate-900 text-white hover:bg-slate-800 transition-all duration-200 shadow-sm w-full"
+                className="mt-2 text-[13px] font-semibold px-5 py-2.5 rounded-full bg-[var(--surface-1)] text-[var(--text-0)] border border-[var(--border-0)] hover:bg-[color-mix(in_srgb,var(--surface-1)_85%,var(--accent-0)_15%)] transition-all duration-200 shadow-sm w-full"
               >
                 Get Early Access
               </button>
