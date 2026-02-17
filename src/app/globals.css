@@ -46,17 +46,39 @@ body {
 
 /* ---- Glass morphism ---- */
 .glass {
-  background: color-mix(in srgb, var(--surface-0) 72%, transparent);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid color-mix(in srgb, var(--border-0) 70%, transparent);
+  background: rgba(30, 41, 59, 0.58);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(148, 163, 184, 0.28);
 }
 
 .glass-strong {
-  background: color-mix(in srgb, var(--surface-0) 86%, transparent);
-  backdrop-filter: blur(30px);
-  -webkit-backdrop-filter: blur(30px);
-  border: 1px solid color-mix(in srgb, var(--border-0) 84%, transparent);
+  background: rgba(15, 23, 42, 0.74);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(148, 163, 184, 0.42);
+}
+
+/* ---- Optional material hooks for industrial glass cards ---- */
+.glass-inner-shadow {
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), inset 0 -14px 28px rgba(2, 6, 23, 0.25);
+}
+
+.glass-noise-hook {
+  position: relative;
+  isolation: isolate;
+}
+
+.glass-noise-hook::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: var(--glass-noise-opacity, 0);
+  background-image: var(--glass-noise-texture);
+  mix-blend-mode: soft-light;
+  z-index: -1;
 }
 
 /* ---- SVG dot pulse for intermediate nodes ---- */
