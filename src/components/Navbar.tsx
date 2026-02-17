@@ -21,12 +21,12 @@ export default function Navbar() {
       transition={{ duration: 0.6, ease: "easeOut" }}
       className={`sticky top-0 z-50 transition-[background-color,box-shadow] duration-300 ${
         scrolled
-          ? "bg-white/80 backdrop-blur-xl shadow-sm"
+          ? "bg-slate-950/75 backdrop-blur-xl shadow-[0_10px_30px_rgba(2,6,23,0.55)]"
           : "bg-transparent"
       }`}
     >
       <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-        <span className="font-semibold text-[17px] tracking-tight text-slate-900">
+        <span className="font-semibold text-[17px] tracking-tight text-slate-100">
           Cortex
         </span>
 
@@ -34,13 +34,13 @@ export default function Navbar() {
         <div className="hidden md:flex items-center gap-8">
           <a
             href="#features"
-            className="text-[13px] font-medium text-slate-500 hover:text-slate-900 transition-colors duration-200"
+            className="text-[13px] font-medium text-slate-300 hover:text-slate-100 transition-colors duration-200"
           >
             Platform
           </a>
           <a
             href="#investors"
-            className="text-[13px] font-medium text-slate-500 hover:text-slate-900 transition-colors duration-200"
+            className="text-[13px] font-medium text-slate-300 hover:text-slate-100 transition-colors duration-200"
           >
             Investors
           </a>
@@ -51,7 +51,7 @@ export default function Navbar() {
 
         {/* Mobile menu button */}
         <button
-          className="md:hidden p-2 text-slate-600 hover:text-slate-900 transition-colors"
+          className="md:hidden p-2 text-slate-300 hover:text-slate-100 transition-colors"
           onClick={() => setIsOpen(!isOpen)}
           aria-label="Toggle menu"
           aria-expanded={isOpen}
@@ -82,20 +82,20 @@ export default function Navbar() {
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.25, ease: "easeInOut" }}
-            className="md:hidden overflow-hidden bg-white/95 backdrop-blur-md border-t border-slate-100 shadow-lg"
+            className="md:hidden overflow-hidden bg-slate-950/90 backdrop-blur-md border-t border-slate-800/80 shadow-[0_20px_40px_rgba(2,6,23,0.65)]"
           >
             <div className="px-6 py-4 flex flex-col gap-1">
               <a
                 href="#features"
                 onClick={() => setIsOpen(false)}
-                className="text-[14px] font-medium text-slate-600 hover:text-slate-900 transition-colors py-2.5"
+                className="text-[14px] font-medium text-slate-300 hover:text-slate-100 transition-colors py-2.5"
               >
                 Platform
               </a>
               <a
                 href="#investors"
                 onClick={() => setIsOpen(false)}
-                className="text-[14px] font-medium text-slate-600 hover:text-slate-900 transition-colors py-2.5"
+                className="text-[14px] font-medium text-slate-300 hover:text-slate-100 transition-colors py-2.5"
               >
                 Investors
               </a>

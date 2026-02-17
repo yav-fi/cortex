@@ -97,7 +97,7 @@ export default function Features() {
   return (
     <section
       id="features"
-      className="relative py-28 px-6 bg-gradient-to-b from-white via-slate-50/60 to-white"
+      className="relative py-28 px-6 bg-gradient-to-b from-slate-950 via-slate-900/95 to-slate-950"
     >
       <div className="max-w-6xl mx-auto">
         {/* Section header */}
@@ -108,12 +108,12 @@ export default function Features() {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-slate-900 mb-5">
+          <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-slate-100 mb-5">
             A Bionic Layer for
             <br />
             <span className="gradient-text">Scientific Reasoning</span>
           </h2>
-          <p className="text-lg text-slate-500 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-lg text-slate-300 max-w-2xl mx-auto leading-relaxed">
             Not workflow automation — a genuine extension of your cognitive
             reach. Cortex amplifies how you think about science.
           </p>
@@ -131,15 +131,15 @@ export default function Features() {
             <motion.div
               key={feature.title}
               variants={itemVariants}
-              className="group p-6 rounded-2xl border border-slate-100 bg-white hover:border-slate-200 hover:shadow-lg hover:shadow-slate-100/50 transition-all duration-300"
+              className="group p-6 rounded-2xl border border-slate-800/80 bg-slate-900/70 hover:border-slate-700 hover:shadow-xl hover:shadow-black/30 transition-all duration-300"
             >
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-slate-50 to-slate-100 flex items-center justify-center mb-4 text-slate-600 group-hover:text-indigo-600 group-hover:from-indigo-50 group-hover:to-indigo-100/60 transition-all duration-300">
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-slate-800 to-slate-700/80 flex items-center justify-center mb-4 text-slate-300 group-hover:text-indigo-300 group-hover:from-indigo-500/20 group-hover:to-indigo-400/25 transition-all duration-300">
                 {feature.icon}
               </div>
-              <h3 className="font-semibold text-[17px] text-slate-900 mb-2 tracking-tight">
+              <h3 className="font-semibold text-[17px] text-slate-100 mb-2 tracking-tight">
                 {feature.title}
               </h3>
-              <p className="text-[14px] text-slate-500 leading-relaxed">
+              <p className="text-[14px] text-slate-300 leading-relaxed">
                 {feature.description}
               </p>
             </motion.div>

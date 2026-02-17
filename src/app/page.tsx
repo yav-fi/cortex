@@ -7,7 +7,7 @@ import ScrollToTop from "@/components/ScrollToTop";
 
 export default function Home() {
   return (
-    <main className="bg-white">
+    <main className="bg-slate-950">
       <Navbar />
       <HeroNetwork />
       <Features />
