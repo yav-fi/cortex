@@ -21,8 +21,8 @@ export default function Navbar() {
       transition={{ duration: 0.6, ease: "easeOut" }}
       className={`sticky top-0 z-50 transition-[border-color,box-shadow,background-color] duration-300 ${
         scrolled
-          ? "glass border-b border-slate-400/30 shadow-[0_8px_24px_rgba(2,6,23,0.22)]"
-          : "bg-transparent border-b border-transparent"
+          ? "bg-slate-950/75 backdrop-blur-xl shadow-[0_10px_30px_rgba(2,6,23,0.55)]"
+          : "bg-transparent"
       }`}
     >
       <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
@@ -82,7 +82,7 @@ export default function Navbar() {
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.25, ease: "easeInOut" }}
-            className="md:hidden overflow-hidden glass-strong glass-inner-shadow glass-noise-hook border-t border-slate-400/30 shadow-[0_18px_42px_rgba(2,6,23,0.45)]"
+            className="md:hidden overflow-hidden bg-slate-950/90 backdrop-blur-md border-t border-slate-800/80 shadow-[0_20px_40px_rgba(2,6,23,0.65)]"
           >
             <div className="px-6 py-4 flex flex-col gap-1">
               <a
