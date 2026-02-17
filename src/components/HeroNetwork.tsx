@@ -541,12 +541,12 @@ export default function HeroNetwork() {
 
   return (
     <section ref={sectionRef} id="tools" className="relative h-[140vh] -mt-16">
-      <div className="relative sticky top-0 h-screen overflow-hidden bg-gradient-to-b from-white via-indigo-50/20 to-white">
+      <div className="relative sticky top-0 h-screen overflow-hidden bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950">
         {/* soft bg orbs */}
         <div className="absolute inset-0 z-0 pointer-events-none">
-          <div className="absolute top-[20%] left-[16%] w-[480px] h-[480px] rounded-full bg-blue-50/40 blur-[100px]" />
-          <div className="absolute top-[28%] right-[14%] w-[420px] h-[420px] rounded-full bg-violet-50/30 blur-[100px]" />
-          <div className="absolute bottom-[18%] left-[32%] w-[400px] h-[400px] rounded-full bg-cyan-50/25 blur-[100px]" />
+          <div className="absolute top-[20%] left-[16%] w-[480px] h-[480px] rounded-full bg-blue-500/10 blur-[100px]" />
+          <div className="absolute top-[28%] right-[14%] w-[420px] h-[420px] rounded-full bg-violet-500/10 blur-[100px]" />
+          <div className="absolute bottom-[18%] left-[32%] w-[400px] h-[400px] rounded-full bg-cyan-500/10 blur-[100px]" />
         </div>
 
         <div className="relative z-10 h-full block">
@@ -568,12 +568,12 @@ export default function HeroNetwork() {
             >
 
               <div className="relative z-10 md:flex md:flex-col md:justify-center md:h-[460px] lg:h-[500px]">
-                <h1 className="text-3xl sm:text-4xl md:text-[2.75rem] font-bold tracking-tight leading-[1.15] text-slate-900 mb-3">
+                <h1 className="text-3xl sm:text-4xl md:text-[2.75rem] font-bold tracking-tight leading-[1.15] text-slate-100 mb-3">
                   Supercharge{" "}
                   <span className="gradient-text">Scientific Discovery</span>
                 </h1>
 
-                <p className="text-sm md:text-[15px] text-slate-400 mb-5 leading-relaxed max-w-[340px] mx-auto">
+                <p className="text-sm md:text-[15px] text-slate-300 mb-5 leading-relaxed max-w-[340px] mx-auto">
                   Science-native AI integrating your knowledge, constraints, and
                   the full research corpus.
                 </p>
@@ -589,7 +589,7 @@ export default function HeroNetwork() {
                         );
                       }
                     }}
-                    className="group flex items-center justify-center h-11 w-11 rounded-full bg-slate-900 text-white shadow-lg transition-all duration-300 hover:bg-slate-700 hover:shadow-xl active:scale-95"
+                    className="group flex items-center justify-center h-11 w-11 rounded-full border border-slate-400/40 bg-slate-900/80 text-slate-100 shadow-lg shadow-slate-950/40 transition-all duration-300 hover:border-slate-200/70 hover:bg-slate-900/80 hover:shadow-xl active:scale-95"
                     aria-label="Scroll to explore tools"
                   >
                     <svg
@@ -753,10 +753,10 @@ export default function HeroNetwork() {
                 }}
               >
                 <div className="flex flex-col items-center gap-2 text-center">
-                  <h2 className="text-lg md:text-4xl font-bold tracking-tight text-slate-800 whitespace-nowrap select-none">
+                  <h2 className="text-lg md:text-4xl font-bold tracking-tight text-slate-100 whitespace-nowrap select-none">
                     Explore Tools
                   </h2>
-                  <p className="text-[11px] md:text-base text-slate-600 whitespace-nowrap select-none">
+                  <p className="text-[11px] md:text-base text-slate-300 whitespace-nowrap select-none">
                     Tap any node to learn more
                   </p>
                 </div>
@@ -790,10 +790,11 @@ export default function HeroNetwork() {
                     className="flex flex-col items-center gap-1.5 group outline-none pointer-events-auto"
                   >
                     <div
-                      className="w-[52px] h-[52px] md:w-[88px] md:h-[88px] rounded-full bg-white flex items-center justify-center transition-shadow duration-300 group-hover:shadow-lg"
+                      className="w-[52px] h-[52px] md:w-[88px] md:h-[88px] rounded-full bg-slate-900/70 glass border-[2.5px] [border-color:var(--tool-border)] flex items-center justify-center transition-[border-color,box-shadow] duration-300 group-hover:[border-color:var(--tool-border-hover)] group-hover:shadow-lg group-hover:shadow-slate-950/30"
                       style={{
-                        border: `2.5px solid ${tool.color}35`,
                         boxShadow: `0 4px 24px ${tool.color}15`,
+                        ["--tool-border" as string]: `${tool.color}55`,
+                        ["--tool-border-hover" as string]: `${tool.color}AA`,
                       }}
                     >
                       <span className="text-[18px] md:text-[32px] select-none">
@@ -808,7 +809,7 @@ export default function HeroNetwork() {
                     </span>
                     <span
                       data-detail
-                      className="text-[10px] text-slate-500 font-medium whitespace-nowrap opacity-0"
+                      className="text-[10px] text-slate-300 font-medium whitespace-nowrap opacity-0"
                     >
                       {tool.fullName}
                     </span>
