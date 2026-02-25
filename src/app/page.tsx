@@ -1,19 +1,9 @@
-import Navbar from "@/components/Navbar";
-import HeroNetwork from "@/components/HeroNetwork";
-import Features from "@/components/Features";
-import Investors from "@/components/Investors";
-import Footer from "@/components/Footer";
-import ScrollToTop from "@/components/ScrollToTop";
+import HomeGate from "@/components/HomeGate";
 
 export default function Home() {
   return (
-    <main className="bg-slate-950">
-      <Navbar />
-      <HeroNetwork />
-      <Features />
-      <Investors />
-      <Footer />
-      <ScrollToTop />
+    <main className="bg-slate-950 min-h-screen flex flex-col">
+      <HomeGate />
     </main>
   );
 }

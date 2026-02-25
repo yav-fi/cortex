@@ -5,103 +5,65 @@ import { motion, AnimatePresence } from "framer-motion";
 import ToolModal, { ToolData } from "./ToolModal";
 
 /* ================================================================== */
-/*  Tool definitions — px/py are %-positions, deliberately asymmetric  */
+/*  Tool definitions — initial layout is a triangle (one top, two base) */
 /* ================================================================== */
 
 const TOOLS: (ToolData & { px: number; py: number })[] = [
   {
-    id: "geo",
-    name: "GEO",
-    fullName: "Description",
+    id: "scholar",
+    name: "Scholar",
+    fullName: "Research Engine & Hypothesis Architect",
     description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.",
+      "Scholar surfaces relevant literature from your research profile and Guild context, then acts as a thought partner to construct mechanistic hypotheses around your active scientific goals.",
     capabilities: [
-      "Bullet 1",
-      "Bullet 2",
-      "Bullet 3",
-      "Bullet 4",
-      "Bullet 5",
-      "Bullet 6",
+      "Literature intelligence",
+      "Researcher knowledge profile grounding",
+      "Guild contextual knowledge integration",
+      "Collaborative hypothesis framing",
+      "Project objective alignment",
+      "Mechanistic hypothesis construction",
     ],
     color: "#3B82F6",
-    icon: "🧬",
-    px: 14,
+    icon: "📚",
+    px: 50,
+    py: 20,
+  },
+  {
+    id: "alchemist",
+    name: "Alchemist",
+    fullName: "Experiment Designer & Iteration Strategist",
+    description:
+      "Alchemist designs optimal initial experiments from hypotheses and real lab constraints, then proposes the highest-value next experiment as data and goals evolve with human-in-the-loop refinement.",
+    capabilities: [
+      "Experimental architect",
+      "Guild-constrained experiment planning",
+      "Neurosymbolic axiom-aware design",
+      "Iteration strategy from prior results",
+      "Highest-value next experiment proposal",
+      "Specialist feedback loop integration",
+    ],
+    color: "#F59E0B",
+    icon: "⚗️",
+    px: 24,
     py: 68,
   },
   {
-    id: "seurat",
-    name: "Seurat",
-    fullName: "Description",
+    id: "oracle",
+    name: "Oracle",
+    fullName: "Scientific Reasoning Core & Insight Extractor",
     description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.",
+      "Oracle applies causal, first-principles neurosymbolic reasoning to extract validated insights while orchestrating bioinformatics toolchains and natural-language workflows for technical and non-technical users.",
     capabilities: [
-      "Bullet 1",
-      "Bullet 2",
-      "Bullet 3",
-      "Bullet 4",
-      "Bullet 5",
-      "Bullet 6",
+      "Causal relationship discovery",
+      "Causal structure inference",
+      "Biological axiom-based validation",
+      "Multi-agent workflow automation",
+      "Natural-language computational analysis",
+      "Interpretable R/Python execution outputs",
     ],
-    color: "#8B5CF6",
-    icon: "🔬",
-    px: 32,
-    py: 22,
-  },
-  {
-    id: "snapgene",
-    name: "SnapGene",
-    fullName: "Description",
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.",
-    capabilities: [
-      "Bullet 1",
-      "Bullet 2",
-      "Bullet 3",
-      "Bullet 4",
-      "Bullet 5",
-      "Bullet 6",
-    ],
-    color: "#10B981",
-    icon: "🧪",
-    px: 50,
-    py: 86,
-  },
-  {
-    id: "projectils",
-    name: "ProjecTILs",
-    fullName: "Description",
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.",
-    capabilities: [
-      "Bullet 1",
-      "Bullet 2",
-      "Bullet 3",
-      "Bullet 4",
-      "Bullet 5",
-      "Bullet 6",
-    ],
-    color: "#06B6D4",
-    icon: "🛡️",
-    px: 68,
-    py: 22,
-  },
-  {
-    id: "screpertoire",
-    name: "scRepertoire",
-    fullName: "Description",
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.",
-    capabilities: [
-      "Bullet 1",
-      "Bullet 2",
-      "Bullet 3",
-      "Bullet 4",
-      "Bullet 5",
-      "Bullet 6",
-    ],
-    color: "#F59E0B",
-    icon: "🔗",
-    px: 86,
+    color: "#A855F7",
+    icon: "🔮",
+    px: 76,
     py: 68,
   },
 ];
@@ -144,46 +106,15 @@ const BRAIN_OUTLINE: string[] = [
   cPath(50, 8, 49, 30, 51, 62, 50, 90),
 ];
 
-/*
- * Spread → Circle layout
- *   Scroll: nodes orbit Cortex hub in an even pentagon (circle)
- *     GEO       (20, 40) — upper-left
- *     Seurat    (32, 22) — upper-left-center
- *     SnapGene  (80, 40) — upper-right
- *     ProjecTILs(68, 22) — upper-right-center
- *     scRep     (69, 76) — lower-right
- *     CENTER    (50, 50) — cortex hub (true screen center)
- */
-
-/* curve amounts & topology — used for dynamic path updates */
-const HUB_PAIRS: [number, number][] = [[0, 2], [1, 3], [2, 4], [3, 0], [4, 1]]; // star pattern
-const HUB_CURVES = [0.12, 0.06, -0.12, 0.1, -0.1];
-const HUB_COLORS = ["#3B82F6", "#8B5CF6", "#10B981", "#06B6D4", "#F59E0B"];
-const HUB_DURS = [5, 4.5, 5.5, 5, 5.5];
-const CROSS_PAIRS: [number, number][] = [[0, 1], [1, 2], [2, 4], [4, 3], [3, 0]];
-const CROSS_CURVES = [0.15, 0.15, -0.1, 0.08, -0.1];
-const CROSS_DURS = [6, 6.5, 7, 6, 5.5];
-const CROSS_COLOR = "#818CF8";
-
-/* initial hub paths (tool → tool, star pattern — no center accumulation) */
-const HUB: { d: string; dur: number; color: string }[] = [
-  { d: qPath(14, 68, 50, 86, 0.12), dur: 5, color: "#3B82F6" },     // GEO → SnapGene
-  { d: qPath(32, 22, 68, 22, 0.06), dur: 4.5, color: "#8B5CF6" },   // Seurat → ProjecTILs
-  { d: qPath(50, 86, 86, 68, -0.12), dur: 5.5, color: "#10B981" },  // SnapGene → scRepertoire
-  { d: qPath(68, 22, 14, 68, 0.1), dur: 5, color: "#06B6D4" },      // ProjecTILs → GEO
-  { d: qPath(86, 68, 32, 22, -0.1), dur: 5.5, color: "#F59E0B" },   // scRepertoire → Seurat
-];
-
-/* initial cross paths (adjacent tools) */
-const CROSS: { d: string; dur: number; color: string }[] = [
-  { d: qPath(14, 68, 32, 22, 0.15), dur: 6, color: CROSS_COLOR },
-  { d: qPath(32, 22, 50, 86, 0.15), dur: 6.5, color: CROSS_COLOR },
-  { d: qPath(50, 86, 86, 68, -0.1), dur: 7, color: CROSS_COLOR },
-  { d: qPath(86, 68, 68, 22, 0.08), dur: 6, color: CROSS_COLOR },
-  { d: qPath(68, 22, 14, 68, -0.1), dur: 5.5, color: CROSS_COLOR },
-];
-
-const CONNECTIONS = [...HUB, ...CROSS];
+/* triangle topology used for dynamic path updates */
+const TRIANGLE_PAIRS: [number, number][] = [[0, 1], [1, 2], [2, 0]];
+const TRIANGLE_CURVES = [0.08, -0.08, 0.08];
+const TRIANGLE_DURS = [5, 5.4, 5.8];
+const CONNECTIONS = TRIANGLE_PAIRS.map(([a, b], i) => ({
+  d: qPath(TOOLS[a].px, TOOLS[a].py, TOOLS[b].px, TOOLS[b].py, TRIANGLE_CURVES[i]),
+  dur: TRIANGLE_DURS[i],
+  color: TOOLS[a].color,
+}));
 
 /* dendrite branches — from spread positions */
 const DENDRITES: string[] = [
@@ -273,23 +204,21 @@ const DOTS: { x: number; y: number; r: number }[] = [
   { x: 48, y: 38, r: 0.2 },  { x: 52, y: 58, r: 0.2 },
 ];
 
-/* target positions — even pentagon (circle) around Cortex hub on scroll
- * Ordered to minimise travel distance from each node's spread position */
+/* target slot assignment by node index (one-slot counterclockwise movement) */
+const TARGET_SLOT_BY_NODE = [0, 2, 1];
+
+/* target positions — rotated triangle on scroll: two top, one bottom (more spread) */
 const TARGETS_DESKTOP = [
-  { x: 20, y: 40 },  // GEO (14,68) → upper-left
-  { x: 50, y: 23 },  // Seurat (24,22) → top center (lowered to clear sticky nav)
-  { x: 31, y: 76 },  // SnapGene (50,86) → lower-left
-  { x: 80, y: 40 },  // ProjecTILs (76,22) → upper-right
-  { x: 69, y: 76 },  // scRep (86,68) → lower-right
+  { x: 27, y: 23 },  // top-left
+  { x: 73, y: 23 },  // top-right
+  { x: 50, y: 85 },  // bottom-center
 ];
 
-/* Mobile: tighter pentagon, slightly lower to clear navbar, smaller overall */
+/* Mobile: slightly tighter but still spread */
 const TARGETS_MOBILE = [
-  { x: 24, y: 42 },  // GEO → upper-left (closer to center)
-  { x: 50, y: 27 },  // Seurat → top center (pushed down from 18 to clear navbar)
-  { x: 34, y: 72 },  // SnapGene → lower-left (closer)
-  { x: 76, y: 42 },  // ProjecTILs → upper-right (closer)
-  { x: 66, y: 72 },  // scRep → lower-right (closer)
+  { x: 31, y: 28 },  // top-left
+  { x: 69, y: 28 },  // top-right
+  { x: 50, y: 80 },  // bottom-center
 ];
 
 /* ================================================================== */
@@ -300,6 +229,34 @@ const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 const clamp01 = (v: number) => Math.max(0, Math.min(1, v));
 const easeIO = (t: number) =>
   t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+const TAU = Math.PI * 2;
+const normalizePositiveAngle = (angle: number) => {
+  const wrapped = angle % TAU;
+  return wrapped < 0 ? wrapped + TAU : wrapped;
+};
+
+function orbitLerpCounterclockwise(
+  start: { x: number; y: number },
+  target: { x: number; y: number },
+  t: number,
+) {
+  const sx = start.x - CTR.x;
+  const sy = start.y - CTR.y;
+  const tx = target.x - CTR.x;
+  const ty = target.y - CTR.y;
+
+  const startAngle = Math.atan2(sy, sx);
+  const targetAngle = Math.atan2(ty, tx);
+  const clockwiseDelta = normalizePositiveAngle(targetAngle - startAngle);
+  const counterclockwiseDelta = clockwiseDelta - TAU;
+  const angle = startAngle + counterclockwiseDelta * t;
+  const radius = lerp(Math.hypot(sx, sy), Math.hypot(tx, ty), t);
+
+  return {
+    x: CTR.x + Math.cos(angle) * radius,
+    y: CTR.y + Math.sin(angle) * radius,
+  };
+}
 
 /* ================================================================== */
 /*  Component                                                           */
@@ -352,6 +309,8 @@ export default function HeroNetwork() {
     let rafId = 0;
     let prevPointerEvents = "auto";
     let isTouching = false;
+    let lastScrollY = window.scrollY;
+    let lastScrollDir: -1 | 0 | 1 = 0;
 
     /* apply visual state — transform & opacity only (compositor-friendly) */
     const applyProgress = (p: number) => {
@@ -375,13 +334,18 @@ export default function HeroNetwork() {
       }
 
       /* nodes: converge toward core via transform (no left/top changes) */
-      const targets = isMobile ? TARGETS_MOBILE : TARGETS_DESKTOP;
+      const targetSlots = isMobile ? TARGETS_MOBILE : TARGETS_DESKTOP;
+      const targets = TOOLS.map((_, i) => targetSlots[TARGET_SLOT_BY_NODE[i]]);
       const maxScale = isMobile ? 1.12 : 1.45;
       const np = easeIO(clamp01((p - 0.08) / 0.65));
+      const curNodes = starts.map((start, i) =>
+        orbitLerpCounterclockwise(start, targets[i], np),
+      );
+
       nodeRefs.current.forEach((el, i) => {
         if (!el) return;
-        const dx = ((targets[i].x - starts[i].x) / 100) * cW * np;
-        const dy = ((targets[i].y - starts[i].y) / 100) * cH * np;
+        const dx = ((curNodes[i].x - starts[i].x) / 100) * cW;
+        const dy = ((curNodes[i].y - starts[i].y) / 100) * cH;
         const s = lerp(1, maxScale, np);
         el.style.transform = `translate(calc(-50% + ${dx}px), calc(-50% + ${dy}px)) scale(${s})`;
 
@@ -392,19 +356,14 @@ export default function HeroNetwork() {
       });
 
       /* dynamic SVG connection paths — follow node movement */
-      const curNodes = starts.map((s, i) => ({
-        x: lerp(s.x, targets[i].x, np),
-        y: lerp(s.y, targets[i].y, np),
-      }));
-      // Hub paths (tool → tool, star pattern): refs 0..4
-      HUB_PAIRS.forEach(([a, b], i) => {
+      TRIANGLE_PAIRS.forEach(([a, b], i) => {
         const el = pathRefs.current[i];
-        if (el) el.setAttribute("d", qPath(curNodes[a].x, curNodes[a].y, curNodes[b].x, curNodes[b].y, HUB_CURVES[i]));
-      });
-      // Cross paths (tool → tool): refs 5..9
-      CROSS_PAIRS.forEach(([a, b], i) => {
-        const el = pathRefs.current[5 + i];
-        if (el) el.setAttribute("d", qPath(curNodes[a].x, curNodes[a].y, curNodes[b].x, curNodes[b].y, CROSS_CURVES[i]));
+        if (el) {
+          el.setAttribute(
+            "d",
+            qPath(curNodes[a].x, curNodes[a].y, curNodes[b].x, curNodes[b].y, TRIANGLE_CURVES[i]),
+          );
+        }
       });
 
       /* core: fade IN earlier — overlaps with node convergence */
@@ -449,6 +408,13 @@ export default function HeroNetwork() {
       };
       requestAnimationFrame(step);
     };
+
+    const getSnapDuration = (fromY: number, toY: number) => {
+      const distance = Math.abs(toY - fromY);
+      const viewport = Math.max(window.innerHeight, 1);
+      const normalized = clamp01(distance / (viewport * 1.35));
+      return Math.round(520 + normalized * 380);
+    };
     animateScrollRef.current = animateScrollTo;
 
     const onScroll = () => {
@@ -458,31 +424,51 @@ export default function HeroNetwork() {
         rafId = 0;
         if (sDist <= 0) return;
 
-        const scrolled = Math.max(0, window.scrollY - sTop);
+        const yNow = window.scrollY;
+        const dy = yNow - lastScrollY;
+        if (Math.abs(dy) > 0.5) {
+          lastScrollDir = dy > 0 ? 1 : -1;
+        }
+        lastScrollY = yNow;
+
+        const scrolled = Math.max(0, yNow - sTop);
         const raw = clamp01(scrolled / sDist);
         applyProgress(raw);
 
         /* snap logic — disabled during programmatic scroll or active touch */
         if (isSnapping || isProgrammaticScroll || isTouching) return;
         if (snapTimer) clearTimeout(snapTimer);
-        const snapDelay = isMobile ? 350 : 90;
+        const snapDelay = isMobile ? 280 : 170;
         snapTimer = setTimeout(() => {
           if (isTouching) return; /* re-check — user may have started touching again */
           const s2 = Math.max(0, window.scrollY - sTop);
           const p2 = clamp01(s2 / sDist);
           /* snap if not already at a pole — any in-between position resolves */
           if (p2 > 0.01 && p2 < 0.99) {
-            isSnapping = true;
-            const snapTarget = p2 >= 0.3 ? 1 : 0;
-            const targetY = sTop + snapTarget * sDist;
-            if (isMobile) {
-              /* use custom smooth scroll on mobile — native scrollTo fights touch inertia */
-              animateScrollTo(targetY, 600);
-              setTimeout(() => { isSnapping = false; }, 700);
+            let snapTarget: 0 | 1;
+
+            const nearTop = p2 <= 0.2;
+            const nearBottom = p2 >= 0.8;
+            const committedNudgeZone = p2 > 0.05 && p2 < 0.95;
+            const midpointBand = p2 >= 0.45 && p2 <= 0.55;
+
+            if (nearTop && lastScrollDir <= 0) {
+              snapTarget = 0;
+            } else if (nearBottom && lastScrollDir >= 0) {
+              snapTarget = 1;
+            } else if (midpointBand && lastScrollDir !== 0) {
+              snapTarget = lastScrollDir > 0 ? 1 : 0;
+            } else if (committedNudgeZone && lastScrollDir !== 0) {
+              snapTarget = lastScrollDir > 0 ? 1 : 0;
             } else {
-              window.scrollTo({ top: targetY, behavior: "smooth" });
-              setTimeout(() => { isSnapping = false; }, 550);
+              snapTarget = p2 >= 0.5 ? 1 : 0;
             }
+
+            isSnapping = true;
+            const targetY = sTop + snapTarget * sDist;
+            const snapDuration = getSnapDuration(window.scrollY, targetY);
+            animateScrollTo(targetY, snapDuration);
+            setTimeout(() => { isSnapping = false; }, snapDuration + 140);
           }
         }, snapDelay);
       });
@@ -540,7 +526,7 @@ export default function HeroNetwork() {
   /* ================================================================ */
 
   return (
-    <section ref={sectionRef} id="tools" className="relative h-[140vh] -mt-16">
+    <section ref={sectionRef} id="tools" className="relative h-[220vh] md:h-[240vh] -mt-16">
       <div className="relative sticky top-0 h-screen overflow-hidden bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950">
         {/* soft bg orbs */}
         <div className="absolute inset-0 z-0 pointer-events-none">
@@ -569,8 +555,8 @@ export default function HeroNetwork() {
 
               <div className="relative z-10 md:flex md:flex-col md:justify-center md:h-[460px] lg:h-[500px]">
                 <h1 className="text-3xl sm:text-4xl md:text-[2.75rem] font-bold tracking-tight leading-[1.15] text-slate-100 mb-3">
-                  Supercharge{" "}
-                  <span className="gradient-text">Scientific Discovery</span>
+                  Introducing{" "}
+                  <span className="gradient-text">Apprentice</span>
                 </h1>
 
                 <p className="text-sm md:text-[15px] text-slate-300 mb-5 leading-relaxed max-w-[340px] mx-auto">
@@ -754,7 +740,7 @@ export default function HeroNetwork() {
               >
                 <div className="flex flex-col items-center gap-2 text-center">
                   <h2 className="text-lg md:text-4xl font-bold tracking-tight text-slate-100 whitespace-nowrap select-none">
-                    Explore Tools
+                    Explore Personas
                   </h2>
                   <p className="text-[11px] md:text-base text-slate-300 whitespace-nowrap select-none">
                     Tap any node to learn more

@@ -28,7 +28,7 @@ export default function ToolModal({ tool, onClose }: ToolModalProps) {
       onClick={onClose}
     >
       {/* Backdrop */}
-      <div className="absolute inset-0 bg-slate-900/10 backdrop-blur-sm" />
+      <div className="absolute inset-0 bg-slate-950/55 backdrop-blur-sm" />
 
       {/* Modal */}
       <motion.div
@@ -36,7 +36,7 @@ export default function ToolModal({ tool, onClose }: ToolModalProps) {
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.92, y: 10 }}
         transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-        className="relative bg-white rounded-2xl shadow-2xl shadow-slate-200/50 max-w-md w-full overflow-hidden border border-slate-100"
+        className="relative bg-slate-900/96 rounded-2xl shadow-2xl shadow-black/60 max-w-md w-full overflow-hidden border border-slate-700/70"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Color accent bar */}
@@ -65,14 +65,14 @@ export default function ToolModal({ tool, onClose }: ToolModalProps) {
               </span>
             </div>
             <div>
-              <h3 className="text-xl font-bold text-slate-900 tracking-tight">
+              <h3 className="text-xl font-bold text-white tracking-tight">
                 {tool.name}
               </h3>
-              <p className="text-sm text-slate-500 mt-0.5">{tool.fullName}</p>
+              <p className="text-sm text-slate-300 mt-0.5">{tool.fullName}</p>
             </div>
             <button
               onClick={onClose}
-              className="ml-auto p-1.5 rounded-lg hover:bg-slate-100 transition-colors text-slate-400 hover:text-slate-600"
+              className="ml-auto p-1.5 rounded-lg hover:bg-slate-800 transition-colors text-slate-400 hover:text-slate-100"
             >
               <svg
                 width="16"
@@ -89,20 +89,20 @@ export default function ToolModal({ tool, onClose }: ToolModalProps) {
           </div>
 
           {/* Description */}
-          <p className="text-[15px] text-slate-600 leading-relaxed mb-6">
+          <p className="text-[15px] text-slate-200 leading-relaxed mb-6">
             {tool.description}
           </p>
 
           {/* Capabilities */}
           <div className="mb-7">
-            <h4 className="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-3">
+            <h4 className="text-xs font-semibold uppercase tracking-wider text-slate-300 mb-3">
               Capabilities
             </h4>
             <div className="grid grid-cols-2 gap-2">
               {tool.capabilities.map((cap) => (
                 <div
                   key={cap}
-                  className="flex items-center gap-2.5 text-[13px] text-slate-600 py-1.5"
+                  className="flex items-center gap-2.5 text-[13px] text-slate-200 py-1.5"
                 >
                   <div
                     className="w-1.5 h-1.5 rounded-full shrink-0"
@@ -127,7 +127,7 @@ export default function ToolModal({ tool, onClose }: ToolModalProps) {
             </button>
             <button
               onClick={onClose}
-              className="px-5 py-2.5 rounded-xl border border-slate-200 text-[13px] font-medium text-slate-600 hover:bg-slate-50 transition-colors"
+              className="px-5 py-2.5 rounded-xl border border-slate-600 text-[13px] font-medium text-slate-100 hover:bg-slate-800 transition-colors"
             >
               Close
             </button>
