@@ -24,7 +24,7 @@ export default function Footer() {
                 Terms
               </a>
               <a
-                href="mailto:hello@apprenticebio.ai"
+                href="mailto:hello@cortex-bio.ai"
                 className="text-xs text-slate-500 hover:text-slate-300 transition-colors"
               >
                 Contact
