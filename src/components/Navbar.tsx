@@ -21,7 +21,7 @@ export default function Navbar({ pageName }: NavbarProps) {
 
   const navItems =
     pageName === "Apprentice"
-      ? ["Scholar", "Alchemist", "Oracle", "Guild"]
+      ? ["Guild"]
       : pageName === "Guild"
         ? ["Apprentice"]
         : ["Apprentice", "Guild"];
